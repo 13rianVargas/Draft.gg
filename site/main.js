@@ -25,7 +25,7 @@ const I18N = {
     "faq.title": "Questions from the summit",
     "q1": "Is it allowed?", "a1": "MeepLab.gg only reads what the League client and the game already show you, through Riot's own local interfaces. It doesn't read the game's memory, doesn't track enemy cooldowns and never tells you what to do mid-game.",
     "q2": "Do I need an account or an API key?", "a2": "No. Open League and MeepLab.gg connects on its own and imports your recent games. A Riot API key is optional, only to import older games.",
-    "q3": "How do updates work?", "a3": "The app checks for new versions every few hours and installs them by itself. Every update is signed and checked before it's installed. Want to try new things first? Turn on \"Get beta versions\" in Settings → Updates.",
+    "q3": "How do updates work?", "a3": "The app checks for new versions every few hours and installs them by itself. Every update is signed and checked before it's installed.",
     "q4": "macOS says it can't check the app", "a4": "MeepLab.gg isn't sold on the App Store. The first time, open it once, then go to System Settings → Privacy & Security and click Open Anyway. After that it opens normally and updates itself.",
     "q5": "Windows shows \"Windows protected your PC\"", "a5": "That's SmartScreen for new apps. Click \"More info\", then \"Run anyway\". It's a single portable file: no installer, nothing else to set up.",
     "final.title": "Ready when the stars align.", "final.free": "Free",
@@ -34,11 +34,10 @@ const I18N = {
     "dl.generic": "Download MeepLab.gg", "dl.for": "Download for {os}", "dl.free": "Free · macOS and Windows",
     "dl.anyOs": "For macOS and Windows computers", "dl.otherNote": "MeepLab.gg runs on a Mac or a Windows PC, next to the League client.",
     "dl.soon": "{os} version coming soon", "dl.follow": "Follow the releases", "dl.all": "All versions",
-    "dl.macReq": "macOS 15+, Apple Silicon & Intel", "dl.winReq": "Windows 10 and 11", "dl.beta": "beta",
+    "dl.macReq": "macOS 15+, Apple Silicon & Intel", "dl.winReq": "Windows 10 and 11",
     "dl.macDmg": "Open the .dmg and drag MeepLab.gg to Applications. The first time you open the app, go to System Settings → Privacy & Security and click Open Anyway.",
     "dl.macZip": "Unzip it and move MeepLab.gg to Applications. The first time you open the app, go to System Settings → Privacy & Security and click Open Anyway.",
     "dl.win": "One portable file, no installer. If SmartScreen appears: More info → Run anyway.",
-    "dl.tryBeta": "Want the newest? <a href=\"{url}\">Try the beta {v}</a>, then turn on \"Get beta versions\" in Settings → Updates.",
   },
   es: {
     "nav.lab": "El Lab", "nav.clash": "Clash", "nav.faq": "Preguntas", "nav.download": "Descargar",
@@ -64,7 +63,7 @@ const I18N = {
     "faq.title": "Preguntas desde la cima",
     "q1": "¿Está permitido?", "a1": "MeepLab.gg solo lee lo que el cliente de League y el juego ya te muestran, por las interfaces locales de Riot. No lee la memoria del juego, no cuenta los tiempos de los rivales y nunca te dice qué hacer durante la partida.",
     "q2": "¿Necesito una cuenta o una API key?", "a2": "No. Abre League y MeepLab.gg se conecta solo e importa tus partidas recientes. La API key de Riot es opcional, solo para importar partidas más antiguas.",
-    "q3": "¿Cómo se actualiza?", "a3": "La app busca versiones nuevas cada pocas horas y las instala sola. Cada actualización viene firmada y se verifica antes de instalarse. ¿Quieres probar lo nuevo primero? Activa \"Get beta versions\" en Settings → Updates.",
+    "q3": "¿Cómo se actualiza?", "a3": "La app busca versiones nuevas cada pocas horas y las instala sola. Cada actualización viene firmada y se verifica antes de instalarse.",
     "q4": "macOS dice que no puede verificar la app", "a4": "MeepLab.gg no se vende en la App Store. La primera vez, ábrela una vez y luego ve a Ajustes del Sistema → Privacidad y seguridad y pulsa \"Abrir igualmente\". Después abre normal y se actualiza sola.",
     "q5": "Windows muestra \"Windows protegió su PC\"", "a5": "Es SmartScreen con las apps nuevas. Pulsa \"Más información\" y luego \"Ejecutar de todas formas\". Es un solo archivo portable: sin instalador, nada más que configurar.",
     "final.title": "Lista cuando se alineen las estrellas.", "final.free": "Gratis",
@@ -73,11 +72,10 @@ const I18N = {
     "dl.generic": "Descargar MeepLab.gg", "dl.for": "Descargar para {os}", "dl.free": "Gratis · macOS y Windows",
     "dl.anyOs": "Para computadores con macOS y Windows", "dl.otherNote": "MeepLab.gg funciona en un Mac o un PC con Windows, junto al cliente de League.",
     "dl.soon": "Versión para {os} muy pronto", "dl.follow": "Sigue las versiones", "dl.all": "Todas las versiones",
-    "dl.macReq": "macOS 15+, Apple Silicon e Intel", "dl.winReq": "Windows 10 y 11", "dl.beta": "beta",
+    "dl.macReq": "macOS 15+, Apple Silicon e Intel", "dl.winReq": "Windows 10 y 11",
     "dl.macDmg": "Abre el .dmg y arrastra MeepLab.gg a Aplicaciones. La primera vez que abras la app, ve a Ajustes del Sistema → Privacidad y seguridad y pulsa \"Abrir igualmente\".",
     "dl.macZip": "Descomprímelo y mueve MeepLab.gg a Aplicaciones. La primera vez que abras la app, ve a Ajustes del Sistema → Privacidad y seguridad y pulsa \"Abrir igualmente\".",
     "dl.win": "Un solo archivo portable, sin instalador. Si aparece SmartScreen: Más información → Ejecutar de todas formas.",
-    "dl.tryBeta": "¿Quieres lo más nuevo? <a href=\"{url}\">Prueba la beta {v}</a> y activa \"Get beta versions\" en Settings → Updates.",
   },
 };
 
@@ -214,8 +212,8 @@ applyLang();
   requestAnimationFrame(draw);
 })();
 
-// Download button: the newest stable release for the visitor's system (the .dmg on macOS, the .exe on Windows),
-// and the newest beta when it's newer.
+// Download button: the latest stable release for the visitor's system (the .dmg on macOS, the .exe on Windows).
+// Betas are never offered here: testers get them through "Get beta versions" in the app.
 (async () => {
   const REPO = "13rianVargas/MeepLab.gg";
   const page = `https://github.com/${REPO}/releases`;
@@ -230,26 +228,19 @@ applyLang();
         assets.find((a) => a.name === "MeepLab.gg-macOS.zip") || assets.find((a) => /macOS\.zip$/i.test(a.name))
       : assets.find((a) => a.name === "MeepLab.gg-Windows.exe") || assets.find((a) => /\.exe$/i.test(a.name));
 
-  let latest = null, beta = null;
+  let latest = null;
   try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=15`);
-    const list = (r.ok ? await r.json() : []).filter((x) => !x.draft && /^v\d/.test(x.tag_name));
-    latest = list.find((x) => !x.prerelease) || null;
-    beta = list.find((x) => x.prerelease) || null;
-    if (beta && latest && new Date(beta.published_at) < new Date(latest.published_at)) beta = null;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`);
+    latest = r.ok ? await r.json() : null;
   } catch (e) {}
 
   const link = (kind) => {
-    const stable = latest && pick(latest.assets, kind);
-    if (stable) return { url: stable.browser_download_url, version: latest.tag_name, beta: false };
-    const b = beta && pick(beta.assets, kind);
-    if (b) return { url: b.browser_download_url, version: beta.tag_name, beta: true };
-    return null;
+    const a = latest && pick(latest.assets || [], kind);
+    return a ? { url: a.browser_download_url, version: latest.tag_name } : null;
   };
 
   function render() {
-    const main = $("dl-main"), other = $("dl-other"), note = $("dl-note"), finalBtn = $("dl-final"), betaNote = $("dl-beta");
-    betaNote.hidden = true;
+    const main = $("dl-main"), other = $("dl-other"), note = $("dl-note"), finalBtn = $("dl-final");
     if (os === "other") {
       $("dl-label").textContent = t("dl.generic");
       $("dl-sub").textContent = t("dl.anyOs");
@@ -263,14 +254,9 @@ applyLang();
     $("dl-icon").textContent = os === "mac" ? "✦" : "⊞";
     if (mine) {
       $("dl-label").textContent = $("dl-final-label").textContent = t("dl.for", { os: names[os] });
-      $("dl-sub").textContent = `${mine.version}${mine.beta ? " · " + t("dl.beta") : ""} · ${t(os === "mac" ? "dl.macReq" : "dl.winReq")}`;
+      $("dl-sub").textContent = `${mine.version} · ${t(os === "mac" ? "dl.macReq" : "dl.winReq")}`;
       main.href = finalBtn.href = mine.url;
       note.textContent = os === "mac" ? t(mine.url.endsWith(".dmg") ? "dl.macDmg" : "dl.macZip") : t("dl.win");
-      const b = beta && !mine.beta && pick(beta.assets, os);
-      if (b) {
-        betaNote.innerHTML = t("dl.tryBeta", { url: b.browser_download_url, v: beta.tag_name });
-        betaNote.hidden = false;
-      }
     } else {
       $("dl-label").textContent = $("dl-final-label").textContent = t("dl.soon", { os: names[os] });
       $("dl-sub").textContent = t("dl.follow");
