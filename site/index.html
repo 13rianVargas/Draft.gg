@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeepLab.gg · The champ select lab under Targon's stars</title>
+  <meta name="description" content="MeepLab.gg reads your League of Legends champ select and tells you the draft's real odds: picks, bans, Clash scouting, lane swaps and a game plan. Free for macOS and Windows.">
+  <meta property="og:title" content="MeepLab.gg">
+  <meta property="og:description" content="The champ select lab under Targon's stars. Free for macOS and Windows.">
+  <meta property="og:image" content="/og.png">
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="aurora" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="brand" href="#top"><img src="/logo.svg" alt="" width="36" height="36"><span>MeepLab<em>.gg</em></span></a>
+    <nav>
+      <a href="#lab" data-i18n="nav.lab">The Lab</a>
+      <a href="#clash" data-i18n="nav.clash">Clash</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button>
+      </div>
+      <a class="nav-cta" href="#download" data-i18n="nav.download">Download</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <svg class="targon" viewBox="0 -700 1440 1220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#fff1c9" stop-opacity=".9"/>
+            <stop offset=".3" stop-color="#ffd98a" stop-opacity=".35"/>
+            <stop offset="1" stop-color="#b48cff" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="peak" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#43319a"/>
+            <stop offset=".5" stop-color="#2a1d68"/>
+            <stop offset="1" stop-color="#140c38"/>
+          </linearGradient>
+          <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2c1f6a" stop-opacity=".85"/>
+            <stop offset="1" stop-color="#1a1145" stop-opacity=".9"/>
+          </linearGradient>
+          <radialGradient id="summit" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#fff6da"/>
+            <stop offset=".35" stop-color="#ffd98a" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#ffd98a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <polygon class="beam" points="996,-40 1024,-40 1170,-700 850,-700" fill="url(#beam)"/>
+        <polygon class="beam thin" points="1005,-40 1015,-40 1060,-700 960,-700" fill="url(#beam)"/>
+        <path d="M0 520 L0 250 L110 190 L220 230 L330 120 L430 190 L520 160 L620 230 L700 170 L760 210 L1240 200 L1330 130 L1440 190 L1440 520 Z" fill="url(#far)"/>
+        <path d="M60 520 L220 360 L330 250 L400 300 L470 260 L600 400 L700 520 Z" fill="#241962"/>
+        <path d="M330 250 L360 300 L344 296 L330 318 L316 297 L300 302 Z" fill="#d9ccff" opacity=".6"/>
+        <path d="M300 520 L560 330 L660 360 L800 200 L900 230 L960 70 L1010 -40 L1062 80 L1120 200 L1200 230 L1300 330 L1440 380 L1440 520 Z" fill="url(#peak)"/>
+        <path d="M1010 -40 L1066 82 L1040 72 L1024 102 L1008 80 L990 104 L974 70 L950 82 Z" fill="#efe6ff" opacity=".92"/>
+        <path d="M800 200 L828 232 L812 230 L800 250 L788 232 L772 236 Z" fill="#d9ccff" opacity=".55"/>
+        <path d="M1010 -40 L960 70 L900 230 L840 330" fill="none" stroke="#7a63d8" stroke-opacity=".45" stroke-width="3"/>
+        <path d="M1010 -40 L1062 80 L1120 200 L1170 300" fill="none" stroke="#7a63d8" stroke-opacity=".3" stroke-width="3"/>
+        <circle class="summit" cx="1010" cy="-40" r="90" fill="url(#summit)"/>
+        <path d="M1010 -62 l6 15 15 6 -15 6 -6 15 -6 -15 -15 -6 15 -6z" fill="#fff6da"/>
+        <path d="M0 520 L0 390 L170 330 L320 390 L470 320 L600 400 L740 360 L860 405 L1000 335 L1140 395 L1290 340 L1440 400 L1440 520 Z" fill="#110a2e"/>
+        <path d="M0 520 L0 462 L220 428 L420 468 L640 438 L860 468 L1080 430 L1300 464 L1440 444 L1440 520 Z" fill="#0a0620"/>
+      </svg>
+
+      <div class="hero-copy">
+        <p class="eyebrow" data-i18n="hero.eyebrow">✦ A League of Legends lab · macOS &amp; Windows</p>
+        <h1 data-i18n-html="hero.title">Read the draft<br>like the <span class="glow">stars</span> do.</h1>
+        <p class="lead" data-i18n="hero.lead">MeepLab.gg watches your champ select and tells you what the draft really says: your team's odds, the picks that fit, the bans that hurt them, who swapped lanes, and a plan for the game. Free, local, and it updates itself.</p>
+        <div class="cta" id="download">
+          <a class="btn primary" id="dl-main" href="https://github.com/13rianVargas/MeepLab.gg/releases">
+            <span class="btn-icon" id="dl-icon">✦</span>
+            <span><strong id="dl-label">Download MeepLab.gg</strong><small id="dl-sub">Free · macOS and Windows</small></span>
+          </a>
+          <a class="btn ghost" id="dl-other" href="https://github.com/13rianVargas/MeepLab.gg/releases">Other platforms</a>
+        </div>
+        <p class="fineprint" id="dl-note"></p>
+        <p class="fineprint beta" id="dl-beta" hidden></p>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="halo"></div>
+        <img class="meep big" src="/meep.svg" alt="">
+        <img class="meep small m1" src="/meep.svg" alt="">
+        <img class="meep small m2" src="/meep.svg" alt="">
+        <img class="meep small m3" src="/meep.svg" alt="">
+        <img class="meep small m4" src="/meep.svg" alt="">
+        <span class="spark s1">✦</span><span class="spark s2">✧</span><span class="spark s3">✦</span><span class="spark s4">✧</span>
+        <div class="verdict">
+          <div class="v-top"><span class="v-title" data-i18n="card.favored">FAVORED</span><span class="v-pct">58%</span></div>
+          <div class="v-row"><span data-i18n="card.level">Level</span><b class="good">+1.2</b><span data-i18n="card.comfort">Comfort</span><b>4/5 vs 2/5</b></div>
+          <div class="v-bars">
+            <span data-i18n="card.early">Early</span><i style="--w:62%"></i>
+            <span data-i18n="card.mid">Mid</span><i style="--w:55%"></i>
+            <span data-i18n="card.late">Late</span><i style="--w:44%" class="warn"></i>
+          </div>
+          <div class="v-swap" data-i18n="card.swap">⇄ SWAP · Gwen top, Smolder bot</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="lab">
+      <svg class="divider" viewBox="0 0 600 40" aria-hidden="true"><polyline points="10,30 120,12 230,26 300,8 370,26 480,12 590,30" fill="none" stroke="#cdb8ff" stroke-opacity=".35" stroke-width="1.5"/><g fill="#ffd98a"><circle cx="10" cy="30" r="2.5"/><circle cx="120" cy="12" r="3"/><circle cx="230" cy="26" r="2.5"/><circle cx="300" cy="8" r="4"/><circle cx="370" cy="26" r="2.5"/><circle cx="480" cy="12" r="3"/><circle cx="590" cy="30" r="2.5"/></g></svg>
+      <h2><span class="rune">✦</span> <span data-i18n="lab.title">Inside the Lab</span></h2>
+      <p class="section-lead" data-i18n="lab.lead">Everything is computed on your computer from the League client itself and public meta data. No AI, no accounts, nothing about you is sent anywhere.</p>
+      <div class="grid">
+        <article class="card"><div class="ic">◐</div><h3 data-i18n="f1.t">The draft's real odds</h3><p data-i18n="f1.d">Your team's win chance from millions of high-elo games, corrected by your own results. Early, mid and late game strength at a glance.</p></article>
+        <article class="card"><div class="ic">✧</div><h3 data-i18n="f2.t">Picks and bans that fit</h3><p data-i18n="f2.d">The best champions for this exact draft, your own pool first. Click one to show it to your team, click again to lock it in.</p></article>
+        <article class="card"><div class="ic">⇄</div><h3 data-i18n="f3.t">Lane swaps and flex picks</h3><p data-i18n="f3.d">Spots the enemy player who went to a lane they never play, and who took theirs, before the loading screen does.</p></article>
+        <article class="card"><div class="ic">❂</div><h3 data-i18n="f4.t">A plan for the game</h3><p data-i18n="f4.d">When your draft wins, what to watch in your lane and the right summoner spells, shown before the game starts.</p></article>
+        <article class="card"><div class="ic">☾</div><h3 data-i18n="f5.t">A clean overlay</h3><p data-i18n="f5.d">Lanes, your build and the next item, Baron and Elder timers. Facts only, the way Riot's rules want it.</p></article>
+        <article class="card"><div class="ic">✶</div><h3 data-i18n="f6.t">Learns from every game</h3><p data-i18n="f6.d">After each game it shows what decided it, minute by minute, and tunes itself to how you actually play.</p></article>
+      </div>
+    </section>
+
+    <section class="section split" id="clash">
+      <div>
+        <h2><span class="rune">✦</span> <span data-i18n="clash.title">Clash, scouted</span></h2>
+        <p class="section-lead" data-i18n="clash.lead">Your next opponent's pools before champ select: what each player mains, their rank, how they've played lately, and the bans that take their comfort picks away.</p>
+        <ul class="ticks">
+          <li data-i18n="clash.t1">Ranks as Riot shows them, both teams</li>
+          <li data-i18n="clash.t2">Ban priority that updates as picks lock</li>
+          <li data-i18n="clash.t3">Each teammate's best pick from their own pool</li>
+          <li data-i18n="clash.t4">Every Clash day saved: bracket, results and scouting</li>
+        </ul>
+      </div>
+      <div class="clash-wrap" aria-hidden="true">
+        <img class="meep peek" src="/meep.svg" alt="">
+        <div class="clash-card">
+          <div class="cc-head"><span data-i18n="cc.ban">Ban first</span><small data-i18n="cc.sub">their comfort picks</small></div>
+          <ol>
+            <li><b>1</b><span data-i18n="cc.r1">Top · 54 games, 63% won</span></li>
+            <li><b>2</b><span data-i18n="cc.r2">Jungle · 31 games, 58% won</span></li>
+            <li><b>3</b><span data-i18n="cc.r3">Mid · 22 games · lately 6 of 20</span></li>
+          </ol>
+          <div class="cc-foot" data-i18n="cc.foot">FAVORED · 57%</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <h2><span class="rune">✦</span> <span data-i18n="faq.title">Questions from the summit</span></h2>
+      <div class="faq">
+        <details><summary data-i18n="q1">Is it allowed?</summary><p data-i18n="a1">MeepLab.gg only reads what the League client and the game already show you, through Riot's own local interfaces. It doesn't read the game's memory, doesn't track enemy cooldowns and never tells you what to do mid-game.</p></details>
+        <details><summary data-i18n="q2">Do I need an account or an API key?</summary><p data-i18n="a2">No. Open League and MeepLab.gg connects on its own and imports your recent games. A Riot API key is optional, only to import older games.</p></details>
+        <details><summary data-i18n="q3">How do updates work?</summary><p data-i18n="a3">The app checks for new versions every few hours and installs them by itself. Every update is signed and checked before it's installed. Want to try new things first? Turn on "Get beta versions" in Settings → Updates.</p></details>
+        <details><summary data-i18n="q4">macOS says it can't check the app</summary><p data-i18n="a4">MeepLab.gg isn't sold on the App Store. The first time, open it once, then go to System Settings → Privacy &amp; Security and click Open Anyway. After that it opens normally and updates itself.</p></details>
+        <details><summary data-i18n="q5">Windows shows "Windows protected your PC"</summary><p data-i18n="a5">That's SmartScreen for new apps. Click "More info", then "Run anyway". It's a single portable file: no installer, nothing else to set up.</p></details>
+      </div>
+    </section>
+
+    <section class="section final">
+      <div class="final-meeps" aria-hidden="true">
+        <img class="meep f1" src="/meep.svg" alt=""><img class="meep f2" src="/meep.svg" alt=""><img class="meep f3" src="/meep.svg" alt="">
+      </div>
+      <h2 data-i18n="final.title">Ready when the stars align.</h2>
+      <a class="btn primary" id="dl-final" href="https://github.com/13rianVargas/MeepLab.gg/releases"><span class="btn-icon">✦</span><span><strong id="dl-final-label">Download MeepLab.gg</strong><small data-i18n="final.free">Free</small></span></a>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="https://github.com/13rianVargas/MeepLab.gg/releases" data-i18n="footer.versions">All versions</a></p>
+    <p class="legal" data-i18n="footer.legal">MeepLab.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
+  </footer>
+  <script src="/main.js"></script>
+</body>
+</html>
