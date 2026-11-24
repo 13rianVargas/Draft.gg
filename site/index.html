@@ -23,6 +23,7 @@
     <nav>
       <a href="#lab" data-i18n="nav.lab">The Lab</a>
       <a href="#clash" data-i18n="nav.clash">Clash</a>
+      <a href="#see" data-i18n="nav.see">Screens</a>
       <a href="#faq" data-i18n="nav.faq">FAQ</a>
       <div class="lang" role="group" aria-label="Language">
         <button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button>
@@ -83,6 +84,13 @@
           <a class="btn ghost" id="dl-other" href="https://github.com/13rianVargas/MeepLab.gg/releases">Other platforms</a>
         </div>
         <p class="fineprint" id="dl-note"></p>
+        <ul class="trust">
+          <li data-i18n="trust.free">Free</li>
+          <li data-i18n="trust.local">Runs on your computer</li>
+          <li data-i18n="trust.memory">Never reads game memory</li>
+          <li data-i18n="trust.signed">Signed auto-updates</li>
+          <li id="dl-count" hidden></li>
+        </ul>
       </div>
 
       <div class="hero-art" aria-hidden="true">
@@ -106,6 +114,22 @@
           <div class="v-swap" data-i18n="card.swap">⇄ SWAP · Gwen top, Smolder bot</div>
         </div>
       </div>
+    </section>
+
+    <section class="section showcase" id="see">
+      <h2><span class="rune">✦</span> <span data-i18n="see.title">See it in action</span></h2>
+      <p class="section-lead" data-i18n="see.lead">Real screens from the app, on a real account.</p>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-shot="0" data-i18n="see.t0">Champ select</button>
+        <button type="button" role="tab" data-shot="1" data-i18n="see.t1">Game review</button>
+        <button type="button" role="tab" data-shot="2" data-i18n="see.t2">Insights</button>
+        <button type="button" role="tab" data-shot="3" data-i18n="see.t3">Clash</button>
+      </div>
+      <figure class="window">
+        <div class="win-bar"><i></i><i></i><i></i><span id="shot-title">MeepLab.gg</span></div>
+        <img id="shot-img" src="/shots/champselect.jpg" width="1920" height="755" alt="MeepLab.gg champ select window">
+      </figure>
+      <p class="shot-caption" id="shot-caption"></p>
     </section>
 
     <section class="section" id="lab">
@@ -147,6 +171,13 @@
       </div>
     </section>
 
+    <section class="section" id="new" hidden>
+      <h2><span class="rune">✦</span> <span id="new-title">What's new</span></h2>
+      <p class="section-lead" id="new-date"></p>
+      <div class="notes" id="new-body"></div>
+      <p class="fineprint"><a href="https://github.com/13rianVargas/MeepLab.gg/releases" data-i18n="new.all">Every version and its notes</a></p>
+    </section>
+
     <section class="section" id="faq">
       <h2><span class="rune">✦</span> <span data-i18n="faq.title">Questions from the summit</span></h2>
       <div class="faq">
@@ -166,6 +197,14 @@
       <a class="btn primary" id="dl-final" href="https://github.com/13rianVargas/MeepLab.gg/releases"><span class="btn-icon">✦</span><span><strong id="dl-final-label">Download MeepLab.gg</strong><small data-i18n="final.free">Free</small></span></a>
     </section>
   </main>
+
+  <dialog id="install">
+    <form method="dialog"><button class="close" aria-label="Close">✕</button></form>
+    <img class="meep-mini" src="/meep.svg" alt="" width="60" height="78">
+    <h3 data-i18n="inst.title">Your download has started</h3>
+    <ol id="inst-steps"></ol>
+    <p class="fineprint"><span data-i18n="inst.retry">Didn't start?</span> <a id="inst-link" href="#" data-i18n="inst.again">Download again</a></p>
+  </dialog>
 
   <footer>
     <p><a href="https://github.com/13rianVargas/MeepLab.gg/releases" data-i18n="footer.versions">All versions</a></p>

@@ -2,7 +2,23 @@
 
 const I18N = {
   en: {
-    "nav.lab": "The Lab", "nav.clash": "Clash", "nav.faq": "FAQ", "nav.download": "Download",
+    "nav.lab": "The Lab", "nav.clash": "Clash", "nav.see": "Screens", "nav.faq": "FAQ", "nav.download": "Download",
+    "trust.free": "Free", "trust.local": "Runs on your computer", "trust.memory": "Never reads game memory", "trust.signed": "Signed auto-updates",
+    "trust.count": "{n} downloads",
+    "see.title": "See it in action", "see.lead": "Real screens from the app, on a real account.",
+    "see.t0": "Champ select", "see.t1": "Game review", "see.t2": "Insights", "see.t3": "Clash",
+    "see.c0": "Champ select: the draft's odds, your best picks with their scores, bans, the lane matchups and a plan for the game.",
+    "see.c1": "After each game: what decided it, gold per lane at 14 minutes, objectives and the key moments.",
+    "see.c2": "Your LP over the season and what your games say: where you lose, thrown leads and comebacks.",
+    "see.c3": "Every Clash day saved: the bracket, each round and how far you went.",
+    "new.title": "What's new in {v}", "new.all": "Every version and its notes",
+    "inst.title": "Your download has started", "inst.retry": "Didn't start?", "inst.again": "Download again",
+    "inst.mac1": "Open MeepLab.gg-macOS.dmg from your Downloads.", "inst.mac2": "Drag MeepLab.gg into Applications.",
+    "inst.mac3": "Open it. If macOS says it can't check the app, go to System Settings → Privacy & Security and click Open Anyway.",
+    "inst.mac4": "Open League: MeepLab.gg connects by itself. It updates on its own from now on.",
+    "inst.win1": "Open MeepLab.gg-Windows.exe from your Downloads (move it anywhere you like first).",
+    "inst.win2": "If \"Windows protected your PC\" appears: More info → Run anyway.",
+    "inst.win3": "Open League: MeepLab.gg connects by itself. It updates on its own from now on.",
     "hero.eyebrow": "✦ A League of Legends lab · macOS & Windows",
     "hero.title": 'Read the draft<br>like the <span class="glow">stars</span> do.',
     "hero.lead": "MeepLab.gg watches your champ select and tells you what the draft really says: your team's odds, the picks that fit, the bans that hurt them, who swapped lanes, and a plan for the game. Free, local, and it updates itself.",
@@ -40,7 +56,23 @@ const I18N = {
     "dl.win": "One portable file, no installer. If SmartScreen appears: More info → Run anyway.",
   },
   es: {
-    "nav.lab": "El Lab", "nav.clash": "Clash", "nav.faq": "Preguntas", "nav.download": "Descargar",
+    "nav.lab": "El Lab", "nav.clash": "Clash", "nav.see": "Pantallas", "nav.faq": "Preguntas", "nav.download": "Descargar",
+    "trust.free": "Gratis", "trust.local": "Funciona en tu computador", "trust.memory": "Nunca lee la memoria del juego", "trust.signed": "Actualizaciones firmadas",
+    "trust.count": "{n} descargas",
+    "see.title": "Así se ve", "see.lead": "Pantallas reales de la app, con una cuenta real.",
+    "see.t0": "Selección", "see.t1": "Revisión", "see.t2": "Insights", "see.t3": "Clash",
+    "see.c0": "Selección de campeones: las probabilidades del draft, tus mejores picks con su puntaje, bans, los cruces de línea y un plan para la partida.",
+    "see.c1": "Después de cada partida: qué la decidió, el oro por línea al minuto 14, los objetivos y los momentos clave.",
+    "see.c2": "Tus LP en la temporada y lo que dicen tus partidas: dónde pierdes, ventajas botadas y remontadas.",
+    "see.c3": "Cada día de Clash guardado: la llave, cada ronda y hasta dónde llegaste.",
+    "new.title": "Novedades de la {v}", "new.all": "Todas las versiones y sus notas",
+    "inst.title": "Tu descarga empezó", "inst.retry": "¿No empezó?", "inst.again": "Descargar de nuevo",
+    "inst.mac1": "Abre MeepLab.gg-macOS.dmg desde Descargas.", "inst.mac2": "Arrastra MeepLab.gg a Aplicaciones.",
+    "inst.mac3": "Ábrela. Si macOS dice que no puede verificarla, ve a Ajustes del Sistema → Privacidad y seguridad y pulsa \"Abrir igualmente\".",
+    "inst.mac4": "Abre League: MeepLab.gg se conecta sola. Desde ahora se actualiza sola.",
+    "inst.win1": "Abre MeepLab.gg-Windows.exe desde Descargas (muévelo antes a donde quieras).",
+    "inst.win2": "Si aparece \"Windows protegió su PC\": Más información → Ejecutar de todas formas.",
+    "inst.win3": "Abre League: MeepLab.gg se conecta sola. Desde ahora se actualiza sola.",
     "hero.eyebrow": "✦ Un laboratorio de League of Legends · macOS y Windows",
     "hero.title": 'Lee el draft<br>como lo leen las <span class="glow">estrellas</span>.',
     "hero.lead": "MeepLab.gg mira tu selección de campeones y te dice lo que el draft dice de verdad: las probabilidades de tu equipo, los picks que encajan, los bans que más les duelen, quién cambió de línea y un plan para la partida. Gratis, en tu computador, y se actualiza solo.",
@@ -228,15 +260,21 @@ applyLang();
         assets.find((a) => a.name === "MeepLab.gg-macOS.zip") || assets.find((a) => /macOS\.zip$/i.test(a.name))
       : assets.find((a) => a.name === "MeepLab.gg-Windows.exe") || assets.find((a) => /\.exe$/i.test(a.name));
 
-  let latest = null;
+  let latest = null, downloads = 0;
   try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`);
-    latest = r.ok ? await r.json() : null;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=100`);
+    const list = r.ok ? await r.json() : [];
+    // Only the app files count (not the update feeds); "MeepLab.gg-macOS.zip" also counts the apps' own updates.
+    for (const rel of list)
+      for (const a of rel.assets || [])
+        if (/\.(dmg|zip|exe)$/i.test(a.name)) downloads += a.download_count;
+    latest = list.find((x) => !x.draft && !x.prerelease && /^v\d/.test(x.tag_name)) || null;
   } catch (e) {}
+  const mb = (bytes) => (bytes / 1048576).toFixed(1) + " MB";
 
   const link = (kind) => {
     const a = latest && pick(latest.assets || [], kind);
-    return a ? { url: a.browser_download_url, version: latest.tag_name } : null;
+    return a ? { url: a.browser_download_url, version: latest.tag_name, size: a.size } : null;
   };
 
   function render() {
@@ -254,7 +292,7 @@ applyLang();
     $("dl-icon").textContent = os === "mac" ? "✦" : "⊞";
     if (mine) {
       $("dl-label").textContent = $("dl-final-label").textContent = t("dl.for", { os: names[os] });
-      $("dl-sub").textContent = `${mine.version} · ${t(os === "mac" ? "dl.macReq" : "dl.winReq")}`;
+      $("dl-sub").textContent = `${mine.version} · ${mb(mine.size)} · ${t(os === "mac" ? "dl.macReq" : "dl.winReq")}`;
       main.href = finalBtn.href = mine.url;
       note.textContent = os === "mac" ? t(mine.url.endsWith(".dmg") ? "dl.macDmg" : "dl.macZip") : t("dl.win");
     } else {
@@ -265,7 +303,74 @@ applyLang();
     }
     other.textContent = theirs ? t("dl.for", { os: names[theirsKind] }) : t("dl.all");
     other.href = theirs ? theirs.url : page;
+    const count = $("dl-count");
+    count.hidden = downloads < 50;
+    count.textContent = t("trust.count", { n: downloads.toLocaleString(lang) });
+    renderNotes();
   }
+
+  // What's new: the latest release's notes.
+  function renderNotes() {
+    if (!latest || !latest.body) return;
+    const esc = (x) => x.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const inline = (x) => esc(x).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/`(.+?)`/g, "<code>$1</code>");
+    let html = "", inList = false;
+    for (const raw of latest.body.split(/\r?\n/)) {
+      const line = raw.trim();
+      if (/^##?\s*download/i.test(line)) break;   // the download section is this page's job
+      if (line.startsWith("- ")) { if (!inList) { html += "<ul>"; inList = true; } html += `<li>${inline(line.slice(2))}</li>`; continue; }
+      if (inList) { html += "</ul>"; inList = false; }
+      if (/^#{1,3}\s/.test(line)) html += `<h3>${inline(line.replace(/^#+\s*/, ""))}</h3>`;
+      else if (line) html += `<p>${inline(line)}</p>`;
+    }
+    if (inList) html += "</ul>";
+    $("new-title").textContent = t("new.title", { v: latest.tag_name });
+    $("new-date").textContent = new Date(latest.published_at).toLocaleDateString(lang, { year: "numeric", month: "long", day: "numeric" });
+    $("new-body").innerHTML = html;
+    $("new").hidden = false;
+  }
+
+  // After a click on a download button: how to install it, like a "thanks for downloading" page.
+  const dialog = $("install");
+  function guide(kind, url) {
+    const steps = kind === "mac" ? ["inst.mac1", "inst.mac2", "inst.mac3", "inst.mac4"] : ["inst.win1", "inst.win2", "inst.win3"];
+    $("inst-steps").innerHTML = steps.map((k) => `<li>${t(k)}</li>`).join("");
+    $("inst-link").href = url;
+    if (typeof dialog.showModal === "function") setTimeout(() => dialog.showModal(), 400);
+  }
+  dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+  for (const id of ["dl-main", "dl-final", "dl-other"])
+    $(id).addEventListener("click", (e) => {
+      const href = e.currentTarget.href;
+      const kind = /\.dmg$|\.zip$/i.test(href) ? "mac" : /\.exe$/i.test(href) ? "windows" : null;
+      if (kind) guide(kind, href);
+    });
   onLang.push(render);
   render();
+})();
+
+// Screens: tabs over real app screenshots.
+(() => {
+  const shots = [
+    { src: "/shots/champselect.jpg", w: 1920, h: 755, title: "MeepLab.gg — Champ select" },
+    { src: "/shots/history.jpg", w: 1498, h: 935, title: "MeepLab.gg — History" },
+    { src: "/shots/insights.jpg", w: 1498, h: 935, title: "MeepLab.gg — Insights" },
+    { src: "/shots/clash.jpg", w: 1498, h: 935, title: "MeepLab.gg — Clash" },
+  ];
+  let current = 0;
+  const img = document.getElementById("shot-img");
+  const tabs = [...document.querySelectorAll(".tabs button")];
+  function show(i) {
+    current = i;
+    const s = shots[i];
+    img.src = s.src; img.width = s.w; img.height = s.h;
+    img.alt = s.title;
+    document.getElementById("shot-title").textContent = s.title;
+    document.getElementById("shot-caption").textContent = t("see.c" + i);
+    tabs.forEach((b, j) => b.setAttribute("aria-selected", String(i === j)));
+  }
+  tabs.forEach((b, i) => b.addEventListener("click", () => show(i)));
+  shots.slice(1).forEach((s) => { const p = new Image(); p.src = s.src; });
+  onLang.push(() => show(current));
+  show(0);
 })();
