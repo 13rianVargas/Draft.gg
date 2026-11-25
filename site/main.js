@@ -5,6 +5,8 @@ const I18N = {
     "nav.lab": "The Lab", "nav.clash": "Clash", "nav.see": "Screens", "nav.faq": "FAQ", "nav.download": "Download",
     "trust.free": "Free", "trust.local": "Runs on your computer", "trust.memory": "Never reads game memory", "trust.signed": "Signed auto-updates",
     "trust.count": "{n} downloads",
+    "term.title": "No warning from macOS: install it from Terminal", "term.copy": "Copy", "term.copied": "Copied",
+    "term.help": "Open Terminal, paste and press Return. It puts MeepLab.gg in Applications and opens it.",
     "see.title": "See it in action", "see.lead": "Real screens from the app, on a real account.",
     "see.t0": "Champ select", "see.t1": "Game review", "see.t2": "Insights", "see.t3": "Clash",
     "see.c0": "Champ select: the draft's odds, your best picks with their scores, bans, the lane matchups and a plan for the game.",
@@ -42,7 +44,7 @@ const I18N = {
     "q1": "Is it allowed?", "a1": "MeepLab.gg only reads what the League client and the game already show you, through Riot's own local interfaces. It doesn't read the game's memory, doesn't track enemy cooldowns and never tells you what to do mid-game.",
     "q2": "Do I need an account or an API key?", "a2": "No. Open League and MeepLab.gg connects on its own and imports your recent games. A Riot API key is optional, only to import older games.",
     "q3": "How do updates work?", "a3": "The app checks for new versions every few hours and installs them by itself. Every update is signed and checked before it's installed.",
-    "q4": "macOS says it can't check the app", "a4": "MeepLab.gg isn't sold on the App Store. The first time, open it once, then go to System Settings → Privacy & Security and click Open Anyway. After that it opens normally and updates itself.",
+    "q4": "macOS says it can't check the app", "a4": "MeepLab.gg isn't sold on the App Store. The first time, open it once, then go to System Settings → Privacy & Security and click Open Anyway. Or skip that: install it from Terminal with the command under the download button. After that it opens normally and updates itself.",
     "q5": "Windows shows \"Windows protected your PC\"", "a5": "That's SmartScreen for new apps. Click \"More info\", then \"Run anyway\". It's a single portable file: no installer, nothing else to set up.",
     "final.title": "Ready when the stars align.", "final.free": "Free",
     "footer.versions": "All versions",
@@ -59,6 +61,8 @@ const I18N = {
     "nav.lab": "El Lab", "nav.clash": "Clash", "nav.see": "Pantallas", "nav.faq": "Preguntas", "nav.download": "Descargar",
     "trust.free": "Gratis", "trust.local": "Funciona en tu computador", "trust.memory": "Nunca lee la memoria del juego", "trust.signed": "Actualizaciones firmadas",
     "trust.count": "{n} descargas",
+    "term.title": "Sin el aviso de macOS: instálala desde Terminal", "term.copy": "Copiar", "term.copied": "Copiado",
+    "term.help": "Abre Terminal, pega y pulsa Enter. Deja MeepLab.gg en Aplicaciones y la abre.",
     "see.title": "Así se ve", "see.lead": "Pantallas reales de la app, con una cuenta real.",
     "see.t0": "Selección", "see.t1": "Revisión", "see.t2": "Insights", "see.t3": "Clash",
     "see.c0": "Selección de campeones: las probabilidades del draft, tus mejores picks con su puntaje, bans, los cruces de línea y un plan para la partida.",
@@ -96,7 +100,7 @@ const I18N = {
     "q1": "¿Está permitido?", "a1": "MeepLab.gg solo lee lo que el cliente de League y el juego ya te muestran, por las interfaces locales de Riot. No lee la memoria del juego, no cuenta los tiempos de los rivales y nunca te dice qué hacer durante la partida.",
     "q2": "¿Necesito una cuenta o una API key?", "a2": "No. Abre League y MeepLab.gg se conecta solo e importa tus partidas recientes. La API key de Riot es opcional, solo para importar partidas más antiguas.",
     "q3": "¿Cómo se actualiza?", "a3": "La app busca versiones nuevas cada pocas horas y las instala sola. Cada actualización viene firmada y se verifica antes de instalarse.",
-    "q4": "macOS dice que no puede verificar la app", "a4": "MeepLab.gg no se vende en la App Store. La primera vez, ábrela una vez y luego ve a Ajustes del Sistema → Privacidad y seguridad y pulsa \"Abrir igualmente\". Después abre normal y se actualiza sola.",
+    "q4": "macOS dice que no puede verificar la app", "a4": "MeepLab.gg no se vende en la App Store. La primera vez, ábrela una vez y luego ve a Ajustes del Sistema → Privacidad y seguridad y pulsa \"Abrir igualmente\". O sáltate eso: instálala desde Terminal con el comando que está bajo el botón de descarga. Después abre normal y se actualiza sola.",
     "q5": "Windows muestra \"Windows protegió su PC\"", "a5": "Es SmartScreen con las apps nuevas. Pulsa \"Más información\" y luego \"Ejecutar de todas formas\". Es un solo archivo portable: sin instalador, nada más que configurar.",
     "final.title": "Lista cuando se alineen las estrellas.", "final.free": "Gratis",
     "footer.versions": "Todas las versiones",
@@ -289,6 +293,8 @@ applyLang();
       return;
     }
     const mine = link(os), theirsKind = os === "mac" ? "windows" : "mac", theirs = link(theirsKind);
+    $("dl-term").hidden = os !== "mac";
+    $("dl-term").title = t("term.help");
     $("dl-icon").textContent = os === "mac" ? "✦" : "⊞";
     if (mine) {
       $("dl-label").textContent = $("dl-final-label").textContent = t("dl.for", { os: names[os] });
@@ -374,3 +380,13 @@ applyLang();
   onLang.push(() => show(current));
   show(0);
 })();
+
+// Copy the Terminal install command.
+document.getElementById("term-copy").addEventListener("click", async (e) => {
+  const b = e.currentTarget;
+  try {
+    await navigator.clipboard.writeText(document.getElementById("term-cmd").textContent);
+    b.textContent = t("term.copied");
+    setTimeout(() => (b.textContent = t("term.copy")), 1600);
+  } catch (err) {}
+});

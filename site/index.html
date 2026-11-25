@@ -84,6 +84,10 @@
           <a class="btn ghost" id="dl-other" href="https://github.com/13rianVargas/MeepLab.gg/releases">Other platforms</a>
         </div>
         <p class="fineprint" id="dl-note"></p>
+        <div class="term" id="dl-term" hidden>
+          <span class="term-title" data-i18n="term.title">No warnings: install from Terminal</span>
+          <div class="term-row"><code id="term-cmd">curl -fsSL https://meeplab-gg.vercel.app/install.sh | bash</code><button type="button" id="term-copy" data-i18n="term.copy">Copy</button></div>
+        </div>
         <ul class="trust">
           <li data-i18n="trust.free">Free</li>
           <li data-i18n="trust.local">Runs on your computer</li>
@@ -184,7 +188,7 @@
         <details><summary data-i18n="q1">Is it allowed?</summary><p data-i18n="a1">MeepLab.gg only reads what the League client and the game already show you, through Riot's own local interfaces. It doesn't read the game's memory, doesn't track enemy cooldowns and never tells you what to do mid-game.</p></details>
         <details><summary data-i18n="q2">Do I need an account or an API key?</summary><p data-i18n="a2">No. Open League and MeepLab.gg connects on its own and imports your recent games. A Riot API key is optional, only to import older games.</p></details>
         <details><summary data-i18n="q3">How do updates work?</summary><p data-i18n="a3">The app checks for new versions every few hours and installs them by itself. Every update is signed and checked before it's installed.</p></details>
-        <details><summary data-i18n="q4">macOS says it can't check the app</summary><p data-i18n="a4">MeepLab.gg isn't sold on the App Store. The first time, open it once, then go to System Settings → Privacy &amp; Security and click Open Anyway. After that it opens normally and updates itself.</p></details>
+        <details><summary data-i18n="q4">macOS says it can't check the app</summary><p data-i18n="a4">MeepLab.gg isn't sold on the App Store. The first time, open it once, then go to System Settings → Privacy &amp; Security and click Open Anyway. Or skip that: install it from Terminal with the command under the download button. After that it opens normally and updates itself.</p></details>
         <details><summary data-i18n="q5">Windows shows "Windows protected your PC"</summary><p data-i18n="a5">That's SmartScreen for new apps. Click "More info", then "Run anyway". It's a single portable file: no installer, nothing else to set up.</p></details>
       </div>
     </section>
